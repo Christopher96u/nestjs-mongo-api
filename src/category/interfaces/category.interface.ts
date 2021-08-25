@@ -1,3 +1,7 @@
 export interface Category {
-    name: String;
+    name: string;
+    description?: string;
+    updatedAt?: Date;
+    deletedAt?: Date;
+    isDeleted?: boolean;
 }
