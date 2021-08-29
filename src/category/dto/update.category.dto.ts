@@ -1,7 +1,6 @@
 import {IsAlpha, IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString, Length} from "class-validator";
 
-// no usar Number o String, siempre en minuscula number, string, solo usar Date
-export class CreateCategoryDto {
+export class UpdateCategoryDto {
     @IsString()
     @IsAlpha()
     @Length(3 , 30)

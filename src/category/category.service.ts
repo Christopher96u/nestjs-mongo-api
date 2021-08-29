@@ -1,5 +1,5 @@
 import {Model} from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Category , CategoryDocument } from './category.schema';
 import { CreateCategoryDto } from './dto/create.category.dto';
@@ -15,10 +15,14 @@ export class CategoryService {
     }
 
     async findAll(): Promise<Category[]> {
-        return  this.categoryModel.find().exec();
+        return  this.categoryModel.find();
     }
     async findOne(id: string): Promise<Category>{
-        return this.categoryModel.findById(id).exec();
+        const category = await this.categoryModel.findById(id).exec();
+        if (!category) {
+            throw new NotFoundException();
+        }
+        return category;
     }
     async update(id: string, createCategoryDto : CreateCategoryDto): Promise<Category>{
         return this.categoryModel.findByIdAndUpdate(id, createCategoryDto, {new: true}).exec();
