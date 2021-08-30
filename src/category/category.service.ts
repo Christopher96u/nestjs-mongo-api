@@ -21,7 +21,10 @@ export class CategoryService {
     async findOne(id: string): Promise<Category>{
         const category = await this.categoryModel.findById(id).exec();
         if (!category || category.isDeleted === true) {
-            throw new NotFoundException();
+            throw new NotFoundException(`Category with id ${id} doesn't exist or has been deleted`);
+        }
+        if (!category.isActive) {
+            throw new NotFoundException(`Category with id ${id} isn't active`);
         }
         return category;
     }

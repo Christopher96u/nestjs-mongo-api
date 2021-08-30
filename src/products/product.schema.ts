@@ -1,7 +1,7 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
-import {Document, ObjectId, Types, Schema as MongooseSchema, SchemaTypes } from 'mongoose';
-export type ProductDocument = Product & Document;
+import {Document, Schema as MongooseSchema } from 'mongoose';
 
+export type ProductDocument = Product & Document;
  @Schema({versionKey: false, timestamps: true})
  export class Product {
     
@@ -10,6 +10,12 @@ export type ProductDocument = Product & Document;
 
     @Prop()
     description?: string;
+
+    @Prop({default: true})
+    isActive?: boolean;
+
+    @Prop({default: false})
+    isDeleted?: boolean
 
     @Prop({type: MongooseSchema.Types.ObjectId, ref: 'Category' })
     category:   MongooseSchema.Types.ObjectId
