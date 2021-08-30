@@ -1,8 +1,9 @@
-
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { CategoryService } from './category.service';
+import { UpdateCategoryDto } from './dto/update.category.dto';
 import { CreateCategoryDto } from './dto/create.category.dto';
-import { Category } from './interfaces/category.interface';
+import { ParseObjectIdPipe } from './../common/pipes/is.object.id';
+import { CategoryService } from './category.service';
+import { Category } from './category.schema';
 
 @Controller('categories')
 export class CategoryController {
@@ -13,28 +14,24 @@ export class CategoryController {
             return this.categoryService.findAll();
         }
 
-    @Get(':id')
-    async findOne(@Param('id') id: string): Promise <Category>{
-        console.log("id : ", id);
-        return await this.categoryService.findOne(id);
-    }
-        
+    @Get(':id') 
+        async findOne(@Param('id', ParseObjectIdPipe) id: string): Promise <Category>{
+            return this.categoryService.findOne(id);
+        }
         
     @Post()
-    async create(@Body() createCategoryDto : CreateCategoryDto){
-        return this.categoryService.create(createCategoryDto);
-    }
+        async create(@Body() createCategoryDto : CreateCategoryDto) : Promise <Category> {
+            return this.categoryService.create(createCategoryDto);
+        
+        }
 
     @Put(':id')
-    async update(@Param('id') id: string,  @Body() createCategoryDto: CreateCategoryDto){
-        return this.categoryService.update(id, createCategoryDto);
-    }
+        async update(@Param('id', ParseObjectIdPipe) id: string,  @Body() updateCategoryDto: UpdateCategoryDto){
+            return this.categoryService.update(id, updateCategoryDto);
+        }
 
     @Delete(':id')
-    async delete(@Param('id') id: string) {
-        return this.categoryService.delete(id);
-    }
-
-
-    
+        async delete(@Param('id', ParseObjectIdPipe) id: string) {
+            return this.categoryService.delete(id);
+        }
 }

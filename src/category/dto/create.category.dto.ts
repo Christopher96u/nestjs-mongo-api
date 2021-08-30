@@ -1,16 +1,10 @@
-import {IsAlpha, IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString, Length} from "class-validator";
+import {IsAlpha, IsNotEmpty, IsOptional, IsString, Length, ValidateIf} from "class-validator";
 
-// no usar Number o String, siempre en minuscula number, string, solo usar Date
 export class CreateCategoryDto {
-    @IsString()
-    @IsAlpha()
-    @Length(3 , 30)
-    @IsNotEmpty()
+    
+    @IsString() @IsAlpha() @Length(3 , 30) @IsNotEmpty()
     readonly name : string;
 
-    @IsString()
-    @Length(5 , 50)
-    @IsOptional()
-    readonly description : string;
-
+    @ValidateIf((obj)=> String(obj.description).length > 0)  @IsString() @Length(5,50)  @IsOptional()
+    readonly description ?: string;
 }

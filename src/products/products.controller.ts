@@ -1,12 +1,8 @@
-import { Body, Controller, Post, Get, Param, UseInterceptors } from '@nestjs/common';
-import { CreateProductDto } from './dto/create.product.dto';
+import { Body, Controller, Post, Get, Param } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import {Product} from './interfaces/product.interface';
-import {Product as ProductModel} from './product.schema'
-import MongooseClassSerializerInterceptor from 'src/utils/mongooseClassSerializer.interceptor';
-
+import { CreateProductDto } from './dto/create.product.dto';
 @Controller('products')
-@UseInterceptors(MongooseClassSerializerInterceptor(ProductModel))
 export class ProductsController {
     constructor(private readonly productService: ProductsService){}
     
@@ -17,7 +13,7 @@ export class ProductsController {
 
 
     @Post()
-    async create( @Body() createProductDto ){
+    async create( @Body() createProductDto : CreateProductDto ){
         return this.productService.create(createProductDto);
     }
     @Get(':id')

@@ -8,18 +8,20 @@ import { Product, ProductDocument } from './product.schema';
 @Injectable()
 export class ProductsService {
     constructor(@InjectModel(Product.name) private  productModel: Model<ProductDocument>){}
-    async create(createProductDto): Promise<Product> {
+    async create(createProductDto: CreateProductDto): Promise<Product> {
         console.log("createProductDto", createProductDto);
     
-        const createdProduct = new this.productModel(createProductDto);
-        return createdProduct.save();
+         const createdProduct = new this.productModel(createProductDto);
+
+         console.log("createdProductDto", createdProduct);
+         return  createdProduct.save();
     }
     async findAll(): Promise<Product[]> {
-        return  this.productModel.find().exec();
+        return   this.productModel.find().populate("category").exec(); 
     }
     
     async findOne(id : string): Promise<Product>{
-        const product =  await this.productModel.findById(id).populate('categories').exec();
+        const product =  await this.productModel.findById(id).exec();
         if (!product) {
             throw new NotFoundException();
         }

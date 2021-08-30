@@ -13,7 +13,7 @@ const ENV = process.env.NODE_ENV;
     expandVariables: true,
     envFilePath: !ENV ? '.development.env' : `.${ENV}.env`
   }),
-    MongooseModule.forRoot(process.env.DATABASE_URI),
+    MongooseModule.forRoot(process.env.DATABASE_URI, { useFindAndModify: false }),
     CategoryModule,
     ProductsModule
   ],
